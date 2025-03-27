@@ -22,6 +22,7 @@ const outputDiv = document.getElementById("output");
 const commandInput = document.getElementById("commandInput");
 const promptSpan = document.getElementById("prompt");
 const customCaret = document.getElementById("customCaret");
+const terminal = document.getElementById("terminal");
 
 // Update the prompt text using Windows-style backslashes.
 function updatePrompt() {
@@ -29,9 +30,8 @@ function updatePrompt() {
 }
 
 // Calculate text width of the commandInput and position caret horizontally.
-// The caret is already vertically centered (top: 50%; transform: translateY(-50%)) in CSS.
 function updateCaretPosition() {
-  // Create a temporary span to measure text width.
+  // Create a temporary span to measure text width
   const measurer = document.createElement("span");
   measurer.style.visibility = "hidden";
   measurer.style.whiteSpace = "pre";
@@ -43,8 +43,7 @@ function updateCaretPosition() {
   const width = measurer.getBoundingClientRect().width;
   document.body.removeChild(measurer);
 
-  // Position the caret relative to the .input-line container
-  // so we add the commandInput's offsetLeft
+  // Position caret relative to .input-line
   const inputLineRect = document.querySelector(".input-line").getBoundingClientRect();
   const commandInputRect = commandInput.getBoundingClientRect();
 
@@ -54,7 +53,7 @@ function updateCaretPosition() {
   customCaret.style.left = (offsetLeftInLine + width) + "px";
 }
 
-// Print a line to the terminal output.
+// Print a line to the terminal output
 function printLine(text) {
   const line = document.createElement("div");
   line.className = "line";
@@ -67,7 +66,7 @@ function clearOutput() {
   outputDiv.innerHTML = "";
 }
 
-// Helper to get a directory object from the file system based on currentPath array.
+// Helper to get a directory object from the file system based on currentPath array
 function getDirectory(pathArray) {
   let dir = fileSystem;
   for (let i = 2; i < pathArray.length; i++) {
@@ -162,6 +161,16 @@ document.addEventListener("DOMContentLoaded", function() {
   printLine("Type 'help' to see available commands.");
   updatePrompt();
   updateCaretPosition();
+  // Focus the command input on load
+  commandInput.focus();
+});
+
+// Click anywhere on the page (except the bypass button) to focus commandInput
+document.addEventListener("click", function(e) {
+  // If the terminal is still visible and user didn't click the bypass button, focus input
+  if (terminal.style.display !== "none" && !e.target.closest(".bypass-button")) {
+    commandInput.focus();
+  }
 });
 
 // Bypass Terminal: Hide the terminal interface and display the full site
