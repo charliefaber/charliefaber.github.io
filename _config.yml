@@ -1,0 +1,5 @@
+title: "Charlie Faber - Resume & Blog"
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://charliefaber.github.io" # your GitHub Pages URL
+markdown: kramdown
+theme: minima
