@@ -17,6 +17,10 @@ const fileSystem = {
 let currentPath = ["C:", "Faber"];
 let currentDir = fileSystem;
 
+// Maintain a command history
+const commandHistory = [];
+let historyIndex = 0;
+
 // DOM elements
 const outputDiv = document.getElementById("output");
 const commandInput = document.getElementById("commandInput");
@@ -30,14 +34,16 @@ function updatePrompt() {
 }
 
 // Calculate text width of the commandInput and position caret horizontally.
+// Append a zero-width space (u200B) to ensure trailing spaces are measured.
 function updateCaretPosition() {
-  // Create a temporary span to measure text width
   const measurer = document.createElement("span");
   measurer.style.visibility = "hidden";
   measurer.style.whiteSpace = "pre";
   measurer.style.fontFamily = getComputedStyle(commandInput).fontFamily;
   measurer.style.fontSize = getComputedStyle(commandInput).fontSize;
-  measurer.textContent = commandInput.innerText;
+
+  // Append a zero-width space to capture trailing space
+  measurer.textContent = commandInput.innerText + "\u200B";
   document.body.appendChild(measurer);
 
   const width = measurer.getBoundingClientRect().width;
@@ -81,10 +87,20 @@ function getDirectory(pathArray) {
 }
 
 function handleCommand(input) {
-  const args = input.trim().split(" ");
+  const trimmed = input.trim();
+  if (trimmed.length > 0) {
+    // Save to command history
+    commandHistory.push(trimmed);
+    historyIndex = commandHistory.length;
+  }
+
+  const args = trimmed.split(" ");
   const command = args[0].toLowerCase();
 
   switch (command) {
+    case "":
+      // empty command (just spaces), do nothing
+      break;
     case "help":
       printLine("Available commands: help, ls, cd, cat, clear, bypass");
       break;
@@ -139,7 +155,7 @@ function handleCommand(input) {
   }
 }
 
-// Process Enter key to run commands
+// Handle special keys for navigation and submission
 commandInput.addEventListener("keydown", function(e) {
   if (e.key === "Enter") {
     e.preventDefault(); // Prevent newline insertion
@@ -150,6 +166,28 @@ commandInput.addEventListener("keydown", function(e) {
     updatePrompt();
     updateCaretPosition();
   }
+  else if (e.key === "ArrowUp") {
+    e.preventDefault();
+    // Move up in history
+    if (historyIndex > 0) {
+      historyIndex--;
+      commandInput.innerText = commandHistory[historyIndex] || "";
+      updateCaretPosition();
+    }
+  }
+  else if (e.key === "ArrowDown") {
+    e.preventDefault();
+    // Move down in history
+    if (historyIndex < commandHistory.length) {
+      historyIndex++;
+      if (historyIndex === commandHistory.length) {
+        commandInput.innerText = "";
+      } else {
+        commandInput.innerText = commandHistory[historyIndex];
+      }
+      updateCaretPosition();
+    }
+  }
 });
 
 // Update caret position on every input
@@ -157,9 +195,9 @@ commandInput.addEventListener("input", updateCaretPosition);
 
 // On page load, print initial lines and position caret
 document.addEventListener("DOMContentLoaded", function() {
-  printLine("Terminal Portfolio [Version 1.0]")
-  printLine("(c) Charlie Faber. All rights reserved.")
-  printLine(" ")
+  printLine("Terminal Portfolio [Version 1.0]");
+  printLine("(c) Charlie Faber. All rights reserved.");
+  printLine(" ");
   updatePrompt();
   updateCaretPosition();
   // Focus the command input on load
