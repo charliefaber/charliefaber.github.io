@@ -45,6 +45,7 @@ a {
   display: inline-block;
   min-width: 200px;
   caret-color: transparent; /* hide native caret */
+  white-space:pre-wrap;
 }
 
 /* Custom blinking caret: a thick rectangle */
