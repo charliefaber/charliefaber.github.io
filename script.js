@@ -28,36 +28,30 @@ function updatePrompt() {
   promptSpan.textContent = currentPath.join("\\") + ">";
 }
 
-// Reposition the caret so it's horizontally and vertically centered relative to the typed text.
+// Calculate text width of the commandInput and position caret horizontally.
+// The caret is already vertically centered (top: 50%; transform: translateY(-50%)) in CSS.
 function updateCaretPosition() {
-  // Create a temporary span to measure the text width & height
+  // Create a temporary span to measure text width.
   const measurer = document.createElement("span");
   measurer.style.visibility = "hidden";
   measurer.style.whiteSpace = "pre";
   measurer.style.fontFamily = getComputedStyle(commandInput).fontFamily;
   measurer.style.fontSize = getComputedStyle(commandInput).fontSize;
-  measurer.style.lineHeight = getComputedStyle(commandInput).lineHeight;
   measurer.textContent = commandInput.innerText;
-
   document.body.appendChild(measurer);
 
-  const textRect = measurer.getBoundingClientRect();
-  const textWidth = textRect.width;
-  const textHeight = textRect.height;
-
-  // Position the caret horizontally at the end of the typed text
-  customCaret.style.left = (commandInput.offsetLeft + textWidth) + "px";
-
-  // Measure the caret's own height (it might be '1em', so let's see actual px)
-  const caretRect = customCaret.getBoundingClientRect();
-  const caretHeight = caretRect.height;
-
-  // Position the caret vertically so it's centered relative to the text line
-  // You can add/subtract a few pixels if you need more fine-tuning, e.g. + 1 or - 1
-  const offsetY = commandInput.offsetTop + (textHeight - caretHeight) / 2;
-  customCaret.style.top = offsetY + "px";
-
+  const width = measurer.getBoundingClientRect().width;
   document.body.removeChild(measurer);
+
+  // Position the caret relative to the .input-line container
+  // so we add the commandInput's offsetLeft
+  const inputLineRect = document.querySelector(".input-line").getBoundingClientRect();
+  const commandInputRect = commandInput.getBoundingClientRect();
+
+  // The left edge of .command-input relative to .input-line
+  const offsetLeftInLine = commandInputRect.left - inputLineRect.left;
+
+  customCaret.style.left = (offsetLeftInLine + width) + "px";
 }
 
 // Print a line to the terminal output.
@@ -146,7 +140,7 @@ function handleCommand(input) {
   }
 }
 
-// Listen for Enter key to process commands.
+// Process Enter key to run commands
 commandInput.addEventListener("keydown", function(e) {
   if (e.key === "Enter") {
     e.preventDefault(); // Prevent newline insertion
@@ -159,20 +153,22 @@ commandInput.addEventListener("keydown", function(e) {
   }
 });
 
-// Update caret position on input.
+// Update caret position on every input
 commandInput.addEventListener("input", updateCaretPosition);
 
-// Initial welcome messages.
-printLine("Welcome to Charlie Faber's Terminal!");
-printLine("Type 'help' to see available commands.");
-updatePrompt();
-updateCaretPosition();
+// On page load, print initial lines and position caret
+document.addEventListener("DOMContentLoaded", function() {
+  printLine("Welcome to Charlie Faber's Terminal!");
+  printLine("Type 'help' to see available commands.");
+  updatePrompt();
+  updateCaretPosition();
+});
 
-// Bypass Terminal: Hide the terminal interface and display the full site.
+// Bypass Terminal: Hide the terminal interface and display the full site
 function bypassTerminal() {
   document.getElementById("terminal").style.display = "none";
   document.getElementById("fullsite").style.display = "block";
 }
 
-// Expose bypassTerminal to the global scope.
+// Expose bypassTerminal to the global scope
 window.bypassTerminal = bypassTerminal;

@@ -49,16 +49,18 @@ a {
 
 /* Custom blinking caret: a thick rectangle */
 .custom-caret {
-  display: inline-block;
-  width: 10px;  /* Adjust thickness as desired */
+  position: absolute;
+  width: 10px; /* Adjust thickness as desired */
   height: 1em;
   background-color: #0f0;
   animation: blink 1s steps(1) infinite;
-  position: absolute;
-  left: 0;
-  top: 0;
   pointer-events: none;
+
+  /* Center vertically in the input-line */
+  top: 50%;
+  transform: translateY(-50%);
 }
+
 @keyframes blink {
   50% { opacity: 0; }
 }
