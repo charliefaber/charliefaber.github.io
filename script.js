@@ -157,8 +157,6 @@ commandInput.addEventListener("input", updateCaretPosition);
 
 // On page load, print initial lines and position caret
 document.addEventListener("DOMContentLoaded", function() {
-  printLine("Welcome to Charlie Faber's Terminal!");
-  printLine("Type 'help' to see available commands.");
   updatePrompt();
   updateCaretPosition();
   // Focus the command input on load
