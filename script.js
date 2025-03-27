@@ -13,8 +13,7 @@ const fileSystem = {
   "contact.txt": "Contact:\nPhone: 404-542-5773\nEmail: charliefaber@gmail.com\nAddress: 1065 United Ave SE Unit 203, Atlanta, GA 30316\nGitHub: https://github.com/charliefaber"
 };
 
-// Maintain the current directory path as an array.
-// The terminal root will display as "C:\Faber"
+// Terminal root will display as "C:\Faber>"
 let currentPath = ["C:", "Faber"];
 let currentDir = fileSystem;
 
@@ -22,12 +21,34 @@ let currentDir = fileSystem;
 const outputDiv = document.getElementById("output");
 const commandInput = document.getElementById("commandInput");
 const promptSpan = document.getElementById("prompt");
+const customCaret = document.getElementById("customCaret");
 
 // Update the prompt text using Windows-style backslashes.
 function updatePrompt() {
   promptSpan.textContent = currentPath.join("\\") + ">";
 }
 
+// Update custom caret position based on the width of the content in commandInput.
+// Since the font is monospaced, we measure the innerText width.
+function updateCaretPosition() {
+  // Create a temporary span to measure text width.
+  const measurer = document.createElement("span");
+  measurer.style.visibility = "hidden";
+  measurer.style.whiteSpace = "pre";
+  measurer.style.fontFamily = getComputedStyle(commandInput).fontFamily;
+  measurer.style.fontSize = getComputedStyle(commandInput).fontSize;
+  measurer.textContent = commandInput.innerText;
+  document.body.appendChild(measurer);
+
+  // Position the caret relative to the commandInput element.
+  const width = measurer.getBoundingClientRect().width;
+  customCaret.style.left = (commandInput.offsetLeft + width) + "px";
+  customCaret.style.top = commandInput.offsetTop + "px";
+
+  document.body.removeChild(measurer);
+}
+
+// Print a line to the terminal output.
 function printLine(text) {
   const line = document.createElement("div");
   line.className = "line";
@@ -42,9 +63,7 @@ function clearOutput() {
 
 // Helper to get a directory object from the file system based on currentPath array.
 function getDirectory(pathArray) {
-  // The root "C:\Faber" corresponds to fileSystem.
   let dir = fileSystem;
-  // For any subdirectory beyond the root (index 2 onward)
   for (let i = 2; i < pathArray.length; i++) {
     const part = pathArray[i];
     if (dir[part] && typeof dir[part] === "object") {
@@ -118,18 +137,24 @@ function handleCommand(input) {
 // Listen for Enter key to process commands.
 commandInput.addEventListener("keydown", function(e) {
   if (e.key === "Enter") {
-    const input = commandInput.value;
+    e.preventDefault(); // Prevent newline insertion
+    const input = commandInput.innerText;
     printLine(currentPath.join("\\") + ">" + " " + input);
     handleCommand(input);
-    commandInput.value = "";
+    commandInput.innerText = "";
     updatePrompt();
+    updateCaretPosition();
   }
 });
+
+// Update caret position on input.
+commandInput.addEventListener("input", updateCaretPosition);
 
 // Initial welcome messages.
 printLine("Welcome to Charlie Faber's Terminal!");
 printLine("Type 'help' to see available commands.");
 updatePrompt();
+updateCaretPosition();
 
 // Bypass Terminal: Hide the terminal interface and display the full site.
 function bypassTerminal() {
@@ -137,5 +162,5 @@ function bypassTerminal() {
   document.getElementById("fullsite").style.display = "block";
 }
 
-// Expose bypassTerminal to the global scope for the bypass button.
+// Expose bypassTerminal to the global scope.
 window.bypassTerminal = bypassTerminal;

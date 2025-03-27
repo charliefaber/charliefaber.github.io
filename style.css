@@ -11,8 +11,6 @@ body {
   font-family: 'Share Tech Mono', monospace;
   font-size: 16px;
   line-height: 1.4;
-  /* Optional: Adjust letter-spacing if needed */
-  /* letter-spacing: 1px; */
 }
 a {
   text-decoration: none;
@@ -33,18 +31,36 @@ a {
 .input-line {
   display: flex;
   align-items: center;
+  position: relative;
 }
 .prompt {
   margin-right: 10px;
 }
+
+/* Replace native input with contenteditable div */
 .command-input {
   background: transparent;
-  border: none;
   outline: none;
   color: #0f0;
-  flex: 1;
-  font-family: inherit;
-  font-size: inherit;
+  display: inline-block;
+  min-width: 200px;
+  caret-color: transparent; /* hide native caret */
+}
+
+/* Custom blinking caret: a thick rectangle */
+.custom-caret {
+  display: inline-block;
+  width: 10px;  /* Adjust thickness as desired */
+  height: 1em;
+  background-color: #0f0;
+  animation: blink 1s steps(1) infinite;
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+@keyframes blink {
+  50% { opacity: 0; }
 }
 
 /* Bypass Button */
