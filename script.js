@@ -1,3 +1,12 @@
+// Check if the current hostname is the "www" version.
+if (window.location.hostname === 'www.charliefaber.com') {
+  // Construct the new URL with the apex domain.
+  var newUrl = window.location.protocol + '//' + 'charliefaber.com' +
+               window.location.pathname + window.location.search;
+  // Redirect the browser to the new URL.
+  window.location.replace(newUrl);
+}
+
 // Simulated file system
 const fileSystem = {
   "about.txt": "About Me:\nAs a highly motivated Software Engineer, I am currently dedicated to simplifying wedding planning for couples globally at The Knot Worldwide. With a Bachelor's in Computer Science and multiple Salesforce certifications, pursuing a Master's in Computer Science with a focus on Machine Learning excites me. I aim to leverage cutting-edge technologies and develop intelligent systems that drive positive global impact.",
