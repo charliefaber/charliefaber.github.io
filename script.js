@@ -157,9 +157,9 @@ commandInput.addEventListener("input", updateCaretPosition);
 
 // On page load, print initial lines and position caret
 document.addEventListener("DOMContentLoaded", function() {
-  printLine("CFaber Terminal [Version 1.0]")
+  printLine("Terminal Portfolio [Version 1.0]")
   printLine("(c) Charlie Faber. All rights reserved.")
-  printLine()
+  printLine("")
   updatePrompt();
   updateCaretPosition();
   // Focus the command input on load
