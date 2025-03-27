@@ -2,7 +2,7 @@
 const fileSystem = {
   "about.txt": "About Me:\nAs a highly motivated Software Engineer, I am currently dedicated to simplifying wedding planning for couples globally at The Knot Worldwide. With a Bachelor's in Computer Science and multiple Salesforce certifications, pursuing a Master's in Computer Science with a focus on Machine Learning excites me. I aim to leverage cutting-edge technologies and develop intelligent systems that drive positive global impact.",
   "resume": {
-    "education.txt": "Education:\n- Bachelor of Science in Computer Science, Georgia College & State University, Milledgeville, GA – 2017\n- Master of Science in Computer Science, Georgia Institute of Technology, Atlanta, GA – Expected Grad Dec 2026",
+    "education.txt": "Education:\n- Bachelor of Science in Computer Science, Georgia College & State University, Milledgeville, GA – 2017\n- Master of Science in Computer Science, Georgia Institute of Technology, Atlanta, GA – Expected Graduation December 2026",
     "certifications.txt": "Certifications:\n- Salesforce Platform Developer I\n- Salesforce Platform Developer II\n- Salesforce Application Architect\n- Salesforce Sharing & Visibility Designer\n- Salesforce Database Management and Architecture Designer\n- Salesforce CPQ Specialist\n- Salesforce Platform App Builder\n- Salesforce Administrator\n- Salesforce Certified Associate",
     "experience.txt": "Professional Experience:\nLead Software Engineer at The Knot Worldwide (Nov 2021 – Present)\nSenior Salesforce Developer at Cognizant (Nov 2019 – Nov 2021)\nSalesforce Developer at IBM (Nov 2017 – Nov 2019)"
   },
