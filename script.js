@@ -28,22 +28,34 @@ function updatePrompt() {
   promptSpan.textContent = currentPath.join("\\") + ">";
 }
 
-// Update custom caret position based on the width of the content in commandInput.
-// Since the font is monospaced, we measure the innerText width.
+// Reposition the caret so it's horizontally and vertically centered relative to the typed text.
 function updateCaretPosition() {
-  // Create a temporary span to measure text width.
+  // Create a temporary span to measure the text width & height
   const measurer = document.createElement("span");
   measurer.style.visibility = "hidden";
   measurer.style.whiteSpace = "pre";
   measurer.style.fontFamily = getComputedStyle(commandInput).fontFamily;
   measurer.style.fontSize = getComputedStyle(commandInput).fontSize;
+  measurer.style.lineHeight = getComputedStyle(commandInput).lineHeight;
   measurer.textContent = commandInput.innerText;
+
   document.body.appendChild(measurer);
 
-  // Position the caret relative to the commandInput element.
-  const width = measurer.getBoundingClientRect().width;
-  customCaret.style.left = (commandInput.offsetLeft + width) + "px";
-  customCaret.style.top = commandInput.offsetTop + "px";
+  const textRect = measurer.getBoundingClientRect();
+  const textWidth = textRect.width;
+  const textHeight = textRect.height;
+
+  // Position the caret horizontally at the end of the typed text
+  customCaret.style.left = (commandInput.offsetLeft + textWidth) + "px";
+
+  // Measure the caret's own height (it might be '1em', so let's see actual px)
+  const caretRect = customCaret.getBoundingClientRect();
+  const caretHeight = caretRect.height;
+
+  // Position the caret vertically so it's centered relative to the text line
+  // You can add/subtract a few pixels if you need more fine-tuning, e.g. + 1 or - 1
+  const offsetY = commandInput.offsetTop + (textHeight - caretHeight) / 2;
+  customCaret.style.top = offsetY + "px";
 
   document.body.removeChild(measurer);
 }
