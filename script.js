@@ -44,9 +44,6 @@ function updateCaretPosition() {
   measurer.style.fontSize = getComputedStyle(commandInput).fontSize;
 
   let text = commandInput.innerText;
-  if (text === "") {
-    text = " "; // Substitute a single space when empty
-  }
   measurer.textContent = text + "\u200B";
   document.body.appendChild(measurer);
 
