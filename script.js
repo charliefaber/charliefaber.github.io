@@ -34,8 +34,6 @@ function updatePrompt() {
 }
 
 // Calculate text width of the commandInput and position caret horizontally.
-// Append a zero-width space (\u200B) to ensure trailing spaces are measured.
-// If the input is empty, substitute a single space for proper measurement.
 function updateCaretPosition() {
   const measurer = document.createElement("span");
   measurer.style.visibility = "hidden";
@@ -64,10 +62,15 @@ function printLine(text) {
   line.className = "line";
   line.textContent = text;
   outputDiv.appendChild(line);
-  // Automatically scroll the terminal output container to the bottom
+
+  // Scroll the terminal container to the bottom
   outputDiv.scrollTop = outputDiv.scrollHeight;
-  // Automatically scroll the entire page to the bottom
-  window.scrollTo(0, document.body.scrollHeight);
+
+  // Use a short timeout to allow the browser to update the layout,
+  // then scroll the entire page to the bottom.
+  setTimeout(() => {
+    window.scrollTo(0, document.documentElement.scrollHeight);
+  }, 10);
 }
 
 function clearOutput() {
@@ -101,7 +104,6 @@ function handleCommand(input) {
 
   switch (command) {
     case "":
-      // empty command (just spaces), do nothing
       break;
     case "help":
       printLine("Available commands: help, ls, cd, cat, clear, bypass");
@@ -157,7 +159,7 @@ function handleCommand(input) {
   }
 }
 
-// Process Enter key to run commands, and handle up/down arrow history
+// Process Enter key to run commands and handle up/down arrow history.
 commandInput.addEventListener("keydown", function(e) {
   if (e.key === "Enter") {
     e.preventDefault(); // Prevent newline insertion
@@ -167,26 +169,18 @@ commandInput.addEventListener("keydown", function(e) {
     commandInput.innerText = "";
     updatePrompt();
     updateCaretPosition();
-  }
-  else if (e.key === "ArrowUp") {
+  } else if (e.key === "ArrowUp") {
     e.preventDefault();
-    // Move up in history
     if (historyIndex > 0) {
       historyIndex--;
       commandInput.innerText = commandHistory[historyIndex] || "";
       updateCaretPosition();
     }
-  }
-  else if (e.key === "ArrowDown") {
+  } else if (e.key === "ArrowDown") {
     e.preventDefault();
-    // Move down in history
     if (historyIndex < commandHistory.length) {
       historyIndex++;
-      if (historyIndex === commandHistory.length) {
-        commandInput.innerText = "";
-      } else {
-        commandInput.innerText = commandHistory[historyIndex];
-      }
+      commandInput.innerText = historyIndex === commandHistory.length ? "" : commandHistory[historyIndex];
       updateCaretPosition();
     }
   }
