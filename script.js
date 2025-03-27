@@ -65,6 +65,7 @@ function printLine(text) {
   line.textContent = text;
   outputDiv.appendChild(line);
   outputDiv.scrollTop = outputDiv.scrollHeight;
+  commandInput.focus();
 }
 
 function clearOutput() {
