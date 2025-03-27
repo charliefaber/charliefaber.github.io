@@ -144,6 +144,9 @@ commandInput.addEventListener("keydown", function(e) {
   if (e.key === "Enter") {
     e.preventDefault(); // Prevent newline insertion
     const input = commandInput.innerText;
+    printLine("CFaber Terminal [Version 1.0]")
+    printLine("(c) Charlie Faber. All rights reserved.")
+    printLine()
     printLine(currentPath.join("\\") + ">" + " " + input);
     handleCommand(input);
     commandInput.innerText = "";
