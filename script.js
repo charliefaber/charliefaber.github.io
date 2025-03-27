@@ -159,7 +159,7 @@ commandInput.addEventListener("input", updateCaretPosition);
 document.addEventListener("DOMContentLoaded", function() {
   printLine("Terminal Portfolio [Version 1.0]")
   printLine("(c) Charlie Faber. All rights reserved.")
-  printLine("")
+  printLine(" ")
   updatePrompt();
   updateCaretPosition();
   // Focus the command input on load
