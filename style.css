@@ -57,7 +57,7 @@ a {
   pointer-events: none;
 
   /* Center vertically in the input-line */
-  top: 45%;
+  top: 48%;
   transform: translateY(-50%);
 }
 
