@@ -34,7 +34,8 @@ function updatePrompt() {
 }
 
 // Calculate text width of the commandInput and position caret horizontally.
-// Append a zero-width space (u200B) to ensure trailing spaces are measured.
+// Append a zero-width space (\u200B) to ensure trailing spaces are measured.
+// If the input is empty, substitute a single space for proper measurement.
 function updateCaretPosition() {
   const measurer = document.createElement("span");
   measurer.style.visibility = "hidden";
@@ -42,24 +43,25 @@ function updateCaretPosition() {
   measurer.style.fontFamily = getComputedStyle(commandInput).fontFamily;
   measurer.style.fontSize = getComputedStyle(commandInput).fontSize;
 
-  // Append a zero-width space to capture trailing space
-  measurer.textContent = commandInput.innerText + "\u200B";
+  let text = commandInput.innerText;
+  if (text === "") {
+    text = " "; // Substitute a single space when empty
+  }
+  measurer.textContent = text + "\u200B";
   document.body.appendChild(measurer);
 
   const width = measurer.getBoundingClientRect().width;
   document.body.removeChild(measurer);
 
-  // Position caret relative to .input-line
+  // Position caret relative to the .input-line container
   const inputLineRect = document.querySelector(".input-line").getBoundingClientRect();
   const commandInputRect = commandInput.getBoundingClientRect();
-
-  // The left edge of .command-input relative to .input-line
   const offsetLeftInLine = commandInputRect.left - inputLineRect.left;
 
   customCaret.style.left = (offsetLeftInLine + width) + "px";
 }
 
-// Print a line to the terminal output
+// Print a line to the terminal output.
 function printLine(text) {
   const line = document.createElement("div");
   line.className = "line";
@@ -72,7 +74,7 @@ function clearOutput() {
   outputDiv.innerHTML = "";
 }
 
-// Helper to get a directory object from the file system based on currentPath array
+// Helper to get a directory object from the file system based on currentPath array.
 function getDirectory(pathArray) {
   let dir = fileSystem;
   for (let i = 2; i < pathArray.length; i++) {
@@ -155,7 +157,7 @@ function handleCommand(input) {
   }
 }
 
-// Handle special keys for navigation and submission
+// Process Enter key to run commands, and handle up/down arrow history
 commandInput.addEventListener("keydown", function(e) {
   if (e.key === "Enter") {
     e.preventDefault(); // Prevent newline insertion
@@ -190,33 +192,31 @@ commandInput.addEventListener("keydown", function(e) {
   }
 });
 
-// Update caret position on every input
+// Update caret position on every input.
 commandInput.addEventListener("input", updateCaretPosition);
 
-// On page load, print initial lines and position caret
+// On page load, print initial lines and focus the input.
 document.addEventListener("DOMContentLoaded", function() {
   printLine("Terminal Portfolio [Version 1.0]");
   printLine("(c) Charlie Faber. All rights reserved.");
   printLine(" ");
   updatePrompt();
   updateCaretPosition();
-  // Focus the command input on load
   commandInput.focus();
 });
 
-// Click anywhere on the page (except the bypass button) to focus commandInput
+// Click anywhere (except the bypass button) to refocus the terminal input.
 document.addEventListener("click", function(e) {
-  // If the terminal is still visible and user didn't click the bypass button, focus input
   if (terminal.style.display !== "none" && !e.target.closest(".bypass-button")) {
     commandInput.focus();
   }
 });
 
-// Bypass Terminal: Hide the terminal interface and display the full site
+// Bypass Terminal: Hide the terminal interface and display the full site.
 function bypassTerminal() {
   document.getElementById("terminal").style.display = "none";
   document.getElementById("fullsite").style.display = "block";
 }
 
-// Expose bypassTerminal to the global scope
+// Expose bypassTerminal to the global scope.
 window.bypassTerminal = bypassTerminal;
