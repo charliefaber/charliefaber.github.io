@@ -58,13 +58,16 @@ function updateCaretPosition() {
   customCaret.style.left = (offsetLeftInLine + width) + "px";
 }
 
-// Print a line to the terminal output.
+// Print a line to the terminal output and lock the scroll to the bottom.
 function printLine(text) {
   const line = document.createElement("div");
   line.className = "line";
   line.textContent = text;
   outputDiv.appendChild(line);
+  // Automatically scroll the terminal output container to the bottom
   outputDiv.scrollTop = outputDiv.scrollHeight;
+  // Automatically scroll the entire page to the bottom
+  window.scrollTo(0, document.body.scrollHeight);
 }
 
 function clearOutput() {
