@@ -62,12 +62,10 @@ function printLine(text) {
   line.className = "line";
   line.textContent = text;
   outputDiv.appendChild(line);
-
   // Scroll the terminal container to the bottom
   outputDiv.scrollTop = outputDiv.scrollHeight;
 
-  // Use a short timeout to allow the browser to update the layout,
-  // then scroll the entire page to the bottom.
+  // Use a short timeout to allow the layout to update, then scroll the entire page
   setTimeout(() => {
     window.scrollTo(0, document.documentElement.scrollHeight);
   }, 10);
