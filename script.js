@@ -14,7 +14,7 @@ const fileSystem = {
 };
 
 // Maintain the current directory path as an array.
-// The terminal root will always display as "C:\Faber"
+// The terminal root will display as "C:\Faber"
 let currentPath = ["C:", "Faber"];
 let currentDir = fileSystem;
 
