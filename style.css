@@ -8,9 +8,11 @@ body {
   margin: 0;
   background: #000;
   color: #0f0;
-  font-family: 'VT323', monospace;
+  font-family: 'Share Tech Mono', monospace;
   font-size: 16px;
   line-height: 1.4;
+  /* Optional: Adjust letter-spacing if needed */
+  /* letter-spacing: 1px; */
 }
 a {
   text-decoration: none;
@@ -55,7 +57,7 @@ a {
   border: none;
   padding: 5px 10px;
   cursor: pointer;
-  font-family: 'VT323', monospace;
+  font-family: 'Share Tech Mono', monospace;
   font-size: 10px;
 }
 
