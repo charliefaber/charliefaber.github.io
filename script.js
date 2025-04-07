@@ -10,7 +10,7 @@ const fileSystem = {
     "post1.txt": "Introducing Myself: The Journey Behind This Website\nDate: March 25, 2025\nHello and welcome! I’m Charlie Faber, a dedicated Software Engineer with experience at The Knot Worldwide, Cognizant, and IBM. This website was created to share my professional journey, technical insights, and passion for innovative technology.",
     "post2.txt": "Top 5 VS Code Extensions I Use Daily\nDate: March 20, 2025\nIn my day-to-day development work, having the right tools can make all the difference. Here are my top 5 VS Code extensions that I use daily..."
   },
-  "contact.txt": "Contact:\nPhone: 404-542-5773\nEmail: charliefaber@gmail.com\nGitHub: https://github.com/charliefaber"
+  "contact.txt": "Contact:\nEmail: charliefaber@gmail.com\nGitHub: https://github.com/charliefaber"
 };
 
 // Terminal root will display as "C:\Faber>"
